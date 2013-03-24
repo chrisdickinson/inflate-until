@@ -1,6 +1,6 @@
 {
   "name": "inflate-until",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "take buffer chunks until the inflated result is === size",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,9 @@
       "ipad/6"
     ]
   },
-  "browser": {"./index.js": "./browser.js"},
+  "browser": {
+    "./index.js": "./browser.js"
+  },
   "author": "Chris Dickinson <chris@neversaw.us>",
   "license": "MIT",
   "gitHead": "23d0fd17a3656f4584893877b31b37e957fb8567",
