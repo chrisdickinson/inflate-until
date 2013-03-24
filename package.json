@@ -1,0 +1,28 @@
+{
+  "name": "inflate-until",
+  "version": "0.0.0",
+  "description": "take buffer chunks until the inflated result is === size",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chrisdickinson/inflate-until.git"
+  },
+  "keywords": [
+    "inflate",
+    "until",
+    "stream"
+  ],
+  "browser": {"./index.js": "./browser.js"},
+  "author": "Chris Dickinson <chris@neversaw.us>",
+  "license": "MIT",
+  "gitHead": "23d0fd17a3656f4584893877b31b37e957fb8567",
+  "devDependencies": {
+    "tape": "~0.3.1"
+  },
+  "dependencies": {
+    "through": "~2.2.7"
+  }
+}

@@ -6,7 +6,8 @@ test('make sure it works as expected', function(assert) {
   var stream = inflateUntil(256, function(err, info) {
     assert.equal(info.data.length, 256)
     assert.equal(info.compressed, 152)
-    assert.equal(stream.rest.length + buf.length, 256 - 152)
+
+    assert.equal(stream.rest.toString('base64'), 'A+iFT4uVEXg=')
     assert.end()
   })
 

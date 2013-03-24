@@ -4,13 +4,11 @@ var through = require('through')
 module.exports = function(size, ready) {
   var stream = through(write, end)
     , inflate = zlib.createInflate({flush: zlib.Z_SYNC_FLUSH}) 
-    , output = through()
     , expecting = size
     , accum = []
     , got = 0
 
-  inflate.pipe(output)
-  output.on('data', gotdata)
+  inflate.on('data', gotdata)
 
   if(ready) {
     stream
