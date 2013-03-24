@@ -15,6 +15,17 @@
     "until",
     "stream"
   ],
+  "testling": {
+    "files": "test.js",
+    "browsers": [
+      "ie/9..latest",
+      "firefox/10..latest",
+      "chrome/20..latest",
+      "safari/latest",
+      "iphone/6",
+      "ipad/6"
+    ]
+  },
   "browser": {"./index.js": "./browser.js"},
   "author": "Chris Dickinson <chris@neversaw.us>",
   "license": "MIT",
