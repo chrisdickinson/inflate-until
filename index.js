@@ -19,10 +19,12 @@ module.exports = function(size, ready) {
   return stream
 
   function write(buf) {
+    stream.pause()
     iter()
 
     function iter() {
       if(!buf.length || expecting === 0) {
+        stream.resume()
         return
       }
   
@@ -35,6 +37,7 @@ module.exports = function(size, ready) {
   }
 
   function gotdata(buf) {
+    stream.resume()
     accum[accum.length] = buf
     expecting -= buf.length
     if(expecting <= 0) {
