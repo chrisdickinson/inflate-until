@@ -37,7 +37,6 @@ module.exports = function(size, ready) {
   }
 
   function gotdata(buf) {
-    stream.resume()
     accum[accum.length] = buf
     expecting -= buf.length
     if(expecting <= 0) {
