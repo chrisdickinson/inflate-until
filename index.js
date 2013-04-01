@@ -19,67 +19,59 @@ function until(size) {
     attempt(ready)
   }
 
-  function end() {
-
+  function get_data_crc(buf) {
+    var s1 = 1
+      , s2 = 0
+    for(var i = 0; i < size; ++i) {
+      s1 = (s1 + buf.readUInt8(i)) % 65521
+      s2 = (s2 + s1) % 65521
+    }
+    return ((s2 << 16) | s1) >>> 0
   }
 
   function attempt(ready) {
-    var current = offset - last_offset
-      , idx = last_offset
+    var middle
       , result
+      , high
+      , low
+      , idx
 
-    backward()
+    high = offset
+    low = last_offset
 
-    function backward() {
-      zlib.inflate(accum.slice(0, current + last_offset), gotzlib)
+    return binary_search()
 
-      function gotzlib(err, data) {
-        if(err || data.length < size) {
-          idx = current + last_offset
-          return forward()
+    function binary_search() {
+      middle = (high + low) >>> 1
+      zlib.inflate(accum.slice(0, middle), function(err, data) {
+        if(err || data.length !== size) {
+          if(low === high) {
+            // not found, folks.
+            return done()
+          }
+          low = middle + 1
+
+          return binary_search()
         }
-        current >>>= 1
-        if(!current) {
-          idx = last_offset
-          return forward()
-        } 
-        backward()
-      }
-    }
 
-    function forward() {
-      if(idx === offset) {
-        return done()
-      }
+        data_crc = data_crc === null ? get_data_crc(data) : data_crc
 
-      zlib.inflate(accum.slice(0, idx), function(err, data) {
-        if(err || data.length < size) {
-          ++idx
-          return forward()
+        high = middle
+
+        if(low >= high) {
+          idx = high
+          result = data
+          return check_adler()
         }
-        result = data
-        check_adler()
+        return binary_search()
       })
     }
 
     function check_adler() {
       var crc
-        , s1
-        , s2
 
-      if(data_crc === null) {
-        s1 = 1
-        s2 = 0
-        for(var i = 0; i < size; ++i) {
-          s1 = (s1 + result.readUInt8(i)) % 65521
-          s2 = (s2 + s1) % 65521
-        }
-        data_crc = ((s2 << 16) | s1) >>> 0
-      }
-
-      for(var i = 0, len = accum.length - idx - 4; i < len; ++i) {
+      for(var i = -1, len = accum.length - idx - 4; i < len; ++i) {
         crc = accum.readUInt32BE(idx + i)
-
         if(crc === data_crc) {
           break
         }
