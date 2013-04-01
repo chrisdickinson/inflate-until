@@ -3,29 +3,31 @@ var test = require('tape')
   , Buffer = require('buffer').Buffer
 
 test('make sure it works as expected', function(assert) {
-  var stream = inflateUntil(256, function(err, info) {
-    assert.equal(info.data.length, 256)
-    assert.equal(info.compressed, 152)
-
-    assert.equal(stream.rest.toString('base64'), 'A+iFT4uVEXg=')
-    assert.end()
-  })
+  var until = inflateUntil(256)
 
   var buf = TEST_DATA
     , done = false
 
-  stream.once('end', function() {
-    done = true
-  })
-
   iter()
+
+  function gotdata(info) {
+    if(!info) {
+      return
+    }
+    done = true
+    assert.equal(info.data.length, 256)
+    assert.equal(info.compressed, 157)
+
+    assert.equal(info.rest.toString('base64'), 'lRF4')
+    assert.end()
+  }
 
   function iter() {
     var chunksize = Math.min(buf.length, 16)
     if(chunksize === 0 || done) {
       return
     }
-    stream.write(buf.slice(0, chunksize))
+    until(buf.slice(0, chunksize), gotdata)
     buf = buf.slice(chunksize)
     setTimeout(iter, 10)
   }

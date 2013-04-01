@@ -27,7 +27,7 @@
     ]
   },
   "browser": {
-    "./index.js": "./browser.js"
+    "./zlib.js": "./zlib-browser.js"
   },
   "author": "Chris Dickinson <chris@neversaw.us>",
   "license": "MIT",

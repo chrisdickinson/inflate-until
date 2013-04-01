@@ -1,6 +1,6 @@
 module.exports = until
 
-var zlib = require('zlib')
+var zlib = require('./zlib')
   , Buffer = require('buffer').Buffer
 
 function until(size) {
