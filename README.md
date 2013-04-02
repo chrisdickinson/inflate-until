@@ -9,30 +9,34 @@ was.
 
 ```javascript
 
-var stream = inflateUntil(256, function(err, info) {
-  stream.rest // the remaining contents of the 
-              // last buffer
+var stream = inflateUntil(256)
 
-  info.compressed // the compressed size
-  info.data // the inflated data
+inflateUntil.write(buf, function(info) {
+  if(info) {
+
+  }
 })
-
-inflateUntil.write(buf)
-inflateUntil.write(buf)
-inflateUntil.write(buf)
-inflateUntil.write(buf)
 
 ```
 
 ## API
 
-#### inflateUntil(size[, ready(err, info)]) -> stream
+#### inflateUntil(size) -> inflate
 
-create an inflateUntil stream.
+create an inflateUntil function.
 
-#### stream.rest
+#### inflate(buf, ready) -> undefined
 
-the remaining bytes of the last buffer written.
+add another `buf` to the available bytes. calls `ready`
+when finished -- if there was enough data to determine whether
+or not we've reached `size` + the adler checksum, `ready`
+will receive an `info` argument:
+
+```javascript
+{ compressed: Number    // size of compressed bytes written
+, rest: Buffer          // Buffer representing unused bytes
+, data: Buffer }        // uncompressed data
+```
 
 ## License
 

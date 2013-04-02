@@ -77,7 +77,9 @@ function until(size) {
         }
       }
 
-      if(i === len) {
+      // make absolutely sure we're
+      // within the bounds.
+      if(i >= len - 1) {
         result = null
         return done()
       }
