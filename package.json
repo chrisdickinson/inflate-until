@@ -1,6 +1,6 @@
 {
   "name": "inflate-until",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "take buffer chunks until the inflated result is === size",
   "main": "index.js",
   "scripts": {
